@@ -1,1 +1,2 @@
-# spring-boot-api-rest
+# Spring Boot API REST: Construa uma API
+Este repositório contém códigos desenvolvidos durante a realização do **[Alura - Cruso de Spring Boot API REST: Construa uma API](https://www.alura.com.br/conteudo/spring-boot-api-rest)** ministrado por **Rodrigo Ferreira**.

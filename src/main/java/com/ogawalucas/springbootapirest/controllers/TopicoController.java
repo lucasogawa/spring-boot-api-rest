@@ -6,8 +6,11 @@ import com.ogawalucas.springbootapirest.models.Topico;
 import com.ogawalucas.springbootapirest.repositories.CursoRepository;
 import com.ogawalucas.springbootapirest.repositories.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,8 +32,11 @@ public class TopicoController {
     }
 
     @PostMapping
-    public void cadastrar(@RequestBody TopicoForm form) {
+    public ResponseEntity<TopicoDto> cadastrar(@RequestBody TopicoForm form, UriComponentsBuilder uriBuilder) {
         Topico topico = form.converter(cursoRepository);
         repository.save(topico);
+
+        URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
+        return ResponseEntity.created(uri).body(new TopicoDto(topico));
     }
 }

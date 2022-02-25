@@ -1,5 +1,6 @@
 package com.ogawalucas.springbootapirest.controllers;
 
+import com.ogawalucas.springbootapirest.dtos.DetalhesDoTopicoDto;
 import com.ogawalucas.springbootapirest.dtos.TopicoDto;
 import com.ogawalucas.springbootapirest.dtos.TopicoForm;
 import com.ogawalucas.springbootapirest.models.Topico;
@@ -39,5 +40,10 @@ public class TopicoController {
 
         URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
         return ResponseEntity.created(uri).body(new TopicoDto(topico));
+    }
+
+    @GetMapping("{id}")
+    public DetalhesDoTopicoDto detalhar(@PathVariable Long id) {
+            return new DetalhesDoTopicoDto(repository.getById(id));
     }
 }

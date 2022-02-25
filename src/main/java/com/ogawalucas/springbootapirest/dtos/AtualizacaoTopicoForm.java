@@ -1,7 +1,6 @@
 package com.ogawalucas.springbootapirest.dtos;
 
 import com.ogawalucas.springbootapirest.models.Topico;
-import com.ogawalucas.springbootapirest.repositories.TopicoRepository;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -16,9 +15,7 @@ public class AtualizacaoTopicoForm {
     @Length(min = 10)
     private String mensagem;
 
-    public Topico atualizar(Long id, TopicoRepository repository) {
-        Topico topico = repository.getById(id);
-
+    public Topico atualizar(Topico topico) {
         topico.setTitulo(this.titulo);
         topico.setMensagem(this.mensagem);
 

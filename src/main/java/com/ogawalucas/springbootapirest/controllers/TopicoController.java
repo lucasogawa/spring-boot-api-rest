@@ -1,5 +1,6 @@
 package com.ogawalucas.springbootapirest.controllers;
 
+import com.ogawalucas.springbootapirest.dtos.AtualizacaoTopicoForm;
 import com.ogawalucas.springbootapirest.dtos.DetalhesDoTopicoDto;
 import com.ogawalucas.springbootapirest.dtos.TopicoDto;
 import com.ogawalucas.springbootapirest.dtos.TopicoForm;
@@ -8,6 +9,7 @@ import com.ogawalucas.springbootapirest.repositories.CursoRepository;
 import com.ogawalucas.springbootapirest.repositories.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -45,5 +47,13 @@ public class TopicoController {
     @GetMapping("{id}")
     public DetalhesDoTopicoDto detalhar(@PathVariable Long id) {
             return new DetalhesDoTopicoDto(repository.getById(id));
+    }
+
+    @Transactional
+    @PutMapping("{id}")
+    public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form) {
+        Topico topico = form.atualizar(id, repository);
+
+        return ResponseEntity.ok(new TopicoDto(topico));
     }
 }

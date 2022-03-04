@@ -8,8 +8,8 @@ import com.ogawalucas.springbootapirest.models.Topico;
 import com.ogawalucas.springbootapirest.repositories.CursoRepository;
 import com.ogawalucas.springbootapirest.repositories.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -31,6 +31,7 @@ public class TopicoController {
     private CursoRepository cursoRepository;
 
     @GetMapping
+    @Cacheable(value = "lista")
     public Page<TopicoDto> lista(@RequestParam(required = false) String cursoNome,
                                  @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         if (cursoNome == null) {

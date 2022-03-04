@@ -8,6 +8,8 @@ import com.ogawalucas.springbootapirest.models.Topico;
 import com.ogawalucas.springbootapirest.repositories.CursoRepository;
 import com.ogawalucas.springbootapirest.repositories.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/topicos")
@@ -27,11 +28,15 @@ public class TopicoController {
     private CursoRepository cursoRepository;
 
     @GetMapping
-    public List<TopicoDto> lista(String cursoNome) {
+    public Page<TopicoDto> lista(@RequestParam(required = false) String cursoNome,
+                                 @RequestParam int pagina,
+                                 @RequestParam int qtde) {
+        var paginacao = PageRequest.of(pagina, qtde);
+
         if (cursoNome == null) {
-            return TopicoDto.converter(repository.findAll());
+            return TopicoDto.converter(repository.findAll(paginacao));
         } else {
-            return TopicoDto.converter(repository.findByCursoNome(cursoNome));
+            return TopicoDto.converter(repository.findByCursoNome(cursoNome, paginacao));
         }
     }
 

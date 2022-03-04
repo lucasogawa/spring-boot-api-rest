@@ -10,7 +10,9 @@ import com.ogawalucas.springbootapirest.repositories.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -30,15 +32,11 @@ public class TopicoController {
 
     @GetMapping
     public Page<TopicoDto> lista(@RequestParam(required = false) String cursoNome,
-                                 @RequestParam int pagina,
-                                 @RequestParam int qtde,
-                                 @RequestParam String ordenacao) {
-        var paginacao = PageRequest.of(pagina, qtde, Sort.Direction.ASC, ordenacao);
-
+                                 @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         if (cursoNome == null) {
-            return TopicoDto.converter(repository.findAll(paginacao));
+            return TopicoDto.converter(repository.findAll(pageable));
         } else {
-            return TopicoDto.converter(repository.findByCursoNome(cursoNome, paginacao));
+            return TopicoDto.converter(repository.findByCursoNome(cursoNome, pageable));
         }
     }
 

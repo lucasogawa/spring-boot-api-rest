@@ -25,10 +25,8 @@ public class AuthenticationController {
     public ResponseEntity<?> auth(@RequestBody @Valid LoginForm form) {
         try {
             var auth = manager.authenticate(form.convert());
-
-            System.out.println(tokenService.gerarToken(auth));
-
-            return ResponseEntity.ok().build();
+            var token = tokenService.gerarToken(auth);
+            return ResponseEntity.ok(new TokenDto(token, "Bearer"));
         } catch (AuthenticationException exception) {
             return ResponseEntity.badRequest().build();
         }

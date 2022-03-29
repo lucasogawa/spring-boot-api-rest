@@ -27,4 +27,18 @@ public class TokenService {
             .signWith(SignatureAlgorithm.HS256, secret)
             .compact();
     }
+
+    public boolean isValidToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public Long getUserId(String token) {
+        var claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Long.parseLong(claims.getSubject());
+    }
 }
